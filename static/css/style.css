@@ -1,81 +1,93 @@
-body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #000;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang TC,
-        Hiragino Sans GB, Microsoft JhengHei, Helvetica Neue, Helvetica, Arial, sans-serif;
-    overflow: hidden;
-}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap");
 
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-/* === 背景 === */
-.background {
-    position: fixed;
-    inset: 0;
-    background: url("../images/background.png") center/cover no-repeat fixed;
-    z-index: -1;
-}
-
-/* === 液態玻璃核心結構 === */
-.liquid_glass-wrapper {
-    position: relative;
-    display: flex;
+body {
+    width: 100%;
+    height: 100vh;
     overflow: hidden;
-    border-radius: var(--border-radius);
+    display: flex;
     justify-content: center;
     align-items: center;
+    font-family: "Inter", sans-serif;
+    background: radial-gradient(circle at 30% 30%, #222, #000 70%);
+    color: white;
 }
 
-.liquid_glass-outer {
-    backdrop-filter: url(#liquid_glass_filter);
-    position: absolute;
+/* === 動態背景漸層 === */
+.bg {
+    position: fixed;
     inset: 0;
-    z-index: 0;
-    border-radius: var(--border-radius);
-    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect x="0" y="0" width="100%" height="100%" rx="0" ry="0" fill="white"/></svg>'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect x="5" y="5" width="calc(100% - 10px)" height="calc(100% - 10px)" rx="28" ry="28" fill="white"/></svg>');
-    mask-composite: exclude;
+    background: linear-gradient(120deg, #ff4d4d, #ff66cc, #6699ff, #00ffff);
+    background-size: 400% 400%;
+    filter: blur(90px) brightness(0.8);
+    animation: gradientMove 18s ease infinite;
+    z-index: -2;
 }
 
-.liquid_glass-cover {
-    backdrop-filter: blur(2px);
-    position: absolute;
+/* === 噪聲覆蓋層 === */
+.noise {
+    position: fixed;
     inset: 0;
-    z-index: 2;
-    border-radius: var(--border-radius);
-    background: rgba(0, 0, 0, 0.12);
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABZElEQVQ4T42Tz0tUURzHP7uRJIS2PZAmUKWEhIlBLYSKzBKYQUJBiZqQYkQRW6NpiAQIVN4BM2BlIoEAZogv+62H/3C48+v+/3u957znnPu+c75fH/kWf6mYN4JrVJX3phLt3w9u1N2+jZlLJ2akzPQ2R2yCN+xvVZ2Dq4hrvAJtsvR/qqc4xkV1a94z9gt7wtM3fDDwBfAg14D6p/wZk9cKbsDc5fZjKh7SlUL8F2Z6hp7nR9v5KpU4Eq3A5WwjGEpSdcct/mRGJ2ij3V2EYsc8zexZV5Wuh3NRqBGcBq1gV9yU98C+QbppsgHXGlnAs1hbr2odtW20VzgFfgI0dRWZYpuzqTkzvM4gD7yH0t3w6zEj/3T9CaM1icHSmY3b7x8y5D8S9UgP4RQ/3b9bkmQDTpsnWdtTspOEiU6roVxP8nLgBp/xU3jPj8Bw6nZzI0e8JtAAAAAElFTkSuQmCC");
+    opacity: 0.05;
+    z-index: -1;
+    pointer-events: none;
 }
 
-.liquid_glass-sharp {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.5),
-        inset -1px -1px 0px rgba(255, 255, 255, 0.6);
-    border-radius: var(--border-radius);
-}
-
-.liquid_glass-reflect {
-    position: absolute;
-    inset: 1px;
-    z-index: 2;
-    box-shadow: inset 2px 2px 6px 2px rgba(255, 255, 255, 0.2),
-        inset -2px -2px 4px -1px rgba(255, 255, 255, 0.2);
-    border-radius: var(--border-radius);
-}
-
-/* === 文字 === */
-.text {
-    position: relative;
-    z-index: 5;
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 40px;
-    font-weight: 600;
+/* === 文字樣式 === */
+.center h1 {
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: 2px;
     text-align: center;
+    background: linear-gradient(90deg, #ffffff, #c0ffff, #80c0ff);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glowMove 6s ease infinite, fadeIn 2s ease forwards;
+    filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.6));
+}
+
+/* === 動畫區 === */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes glowMove {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
